@@ -2,6 +2,7 @@ package com.cs465.team_award.accessiblesidewalks;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,11 +28,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.ArrayList;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
@@ -41,6 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int REQUEST_FINE_LOCATION = 100;
     private GoogleMap mMap;
     private Location myLocation;
+    private ArrayList<Obstacle> obstacles;
 
     private static String TAG = "DEBUGGING";
 
@@ -58,6 +63,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLastLocation();
         startLocationUpdates();
 
+        //Initialize the obstacle list
+        obstacles = new ArrayList<Obstacle>();
+
+
+        //Test obstacles
+        String testDescription = "Lorem ipsum dolor sit amet consectetur adipiscing elit per commodo ullamcorper, fringilla luctus gravida at viverra vivamus aenean nulla condimentum pellentesque vestibulum, ridiculus natoque netus aliquet ad praesent arcu bibendum faucibus. ";
+        obstacles.add(new Obstacle(new LatLng(40.110404, -88.231220),0, testDescription, 1));
+        obstacles.add(new Obstacle(new LatLng(40.112685, -88.222637),1, testDescription, 0));
+        obstacles.add(new Obstacle(new LatLng(40.116443, -88.226773),0, testDescription, 1));
+
     }
 
 
@@ -73,6 +88,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+
+        for(Obstacle o: obstacles) {
+            //Chose the right drawable for the obstacle (if its straight or upside down)
+            int tempMarker = 0;
+            if (o.getOrientation() == 0){
+                tempMarker = R.drawable.obstacle_0;
+            }
+            else if(o.getOrientation() == 1){
+                tempMarker = R.drawable.obstacle_1;
+
+
+            }
+
+            googleMap.addMarker(new MarkerOptions().position(o.getLoc())
+                    .title(o.getType()).icon(BitmapDescriptorFactory.fromResource(tempMarker)));
+        }
 
         if (checkPermissions()) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
