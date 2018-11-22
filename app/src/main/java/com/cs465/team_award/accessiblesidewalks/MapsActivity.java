@@ -1,5 +1,6 @@
 package com.cs465.team_award.accessiblesidewalks;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -13,10 +14,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public static final String PREF_USER_FIRST_TIME = "user_first_time";
+    boolean isUserFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ********* CODE TO SWITCH TO ONBOARDING *********
+        isUserFirstTime = Boolean.valueOf(Utils.readSharedSetting(MapsActivity.this, PREF_USER_FIRST_TIME, "true"));
+
+        Intent introIntent = new Intent(MapsActivity.this, OnboardingActivity.class);
+        introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
+
+        //if (isUserFirstTime)
+        startActivity(introIntent);
+        // ************** END ONBOARDING CODE ***********
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
