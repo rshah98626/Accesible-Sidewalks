@@ -208,6 +208,8 @@ public class OnboardingActivity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
         ImageView img;
         int[] bgs = new int[]{R.drawable.ic_flight_24dp, R.drawable.ic_mail_24dp, R.drawable.ic_explore_24dp, R.drawable.ic_flight_24dp, R.drawable.ic_mail_24dp};
+        int[] titles = new int[]{R.string.intro_section_title, R.string.curb_section_title, R.string.point_section_title, R.string.lowlight_section_title, R.string.createobstacle_section_title};
+        int[] descriptions = new int[]{R.string.intro_section_description, R.string.curb_section_description, R.string.point_section_description, R.string.lowlight_section_description, R.string.createobstacle_section_description};
 
         public PlaceholderFragment() {
         }
@@ -224,14 +226,23 @@ public class OnboardingActivity extends AppCompatActivity {
             return fragment;
         }
 
+        /**
+         * Changes the section image, title, and description as the user moves between sections.
+         * @param inflater
+         * @param container
+         * @param savedInstanceState
+         * @return
+         */
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_onboarding, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 
-            // gotta change this to reflect description
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            TextView title = (TextView) rootView.findViewById(R.id.section_label);
+            title.setText(titles[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
+
+            TextView description = (TextView) rootView.findViewById(R.id.section_description);
+            description.setText(descriptions[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
 
             img = (ImageView) rootView.findViewById(R.id.section_img);
             img.setBackgroundResource(bgs[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
