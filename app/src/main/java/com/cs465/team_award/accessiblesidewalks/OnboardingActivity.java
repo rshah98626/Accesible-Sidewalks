@@ -91,7 +91,7 @@ public class OnboardingActivity extends AppCompatActivity {
         mViewPager.setCurrentItem(page);
         updateIndicators(page);
 
-        final int color1 = ContextCompat.getColor(this, R.color.cyan);
+        final int color1 = ContextCompat.getColor(this, R.color.white_70);
         final int color2 = ContextCompat.getColor(this, R.color.orange);
         final int color3 = ContextCompat.getColor(this, R.color.green);
         final int color4 = ContextCompat.getColor(this, R.color.red);
@@ -207,9 +207,9 @@ public class OnboardingActivity extends AppCompatActivity {
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         ImageView img;
-        int[] bgs = new int[]{R.drawable.ic_flight_24dp, R.drawable.ic_mail_24dp, R.drawable.ic_explore_24dp, R.drawable.ic_flight_24dp, R.drawable.ic_mail_24dp};
-        int[] titles = new int[]{R.string.intro_section_title, R.string.curb_section_title, R.string.point_section_title, R.string.lowlight_section_title, R.string.createobstacle_section_title};
-        int[] descriptions = new int[]{R.string.intro_section_description, R.string.curb_section_description, R.string.point_section_description, R.string.lowlight_section_description, R.string.createobstacle_section_description};
+        int[] bgs = new int[]{R.drawable.ima_1_ob, R.drawable.ima_2_ob, R.drawable.ima_3_ob, R.drawable.ima_4_ob, R.drawable.ima_5_ob};
+        int[] titles = new int[]{R.string.point_section_title, R.string.curb_section_title, R.string.lowlight_section_title, R.string.createobstacle_section_title, R.string.canadd_section_title};
+        int[] descriptions = new int[]{R.string.point_section_description, R.string.curb_section_description, R.string.lowlight_section_description, R.string.createobstacle_section_description, R.string.canadd_section_description};
 
         public PlaceholderFragment() {
         }
@@ -245,7 +245,7 @@ public class OnboardingActivity extends AppCompatActivity {
             description.setText(descriptions[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
 
             img = (ImageView) rootView.findViewById(R.id.section_img);
-            img.setBackgroundResource(bgs[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
+            img.setImageResource(bgs[getArguments().getInt(ARG_SECTION_NUMBER) - 1]);
 
             return rootView;
         }

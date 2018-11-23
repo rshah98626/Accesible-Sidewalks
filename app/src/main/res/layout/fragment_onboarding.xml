@@ -6,19 +6,19 @@
     android:padding="@dimen/activity_horizontal_margin"
     tools:context=".OnboardingActivity$PlaceholderFragment">
 
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="top">
 
         <ImageView
             android:id="@+id/section_img"
-            android:layout_width="192dp"
-            android:layout_height="192dp"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
             android:adjustViewBounds="true"
-            android:alpha="0.30"
-            android:background="@drawable/ic_flight_24dp"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"/>
 
     </FrameLayout>
 
@@ -36,7 +36,9 @@
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textAllCaps="true"
+            android:textStyle="bold"
             tools:text="Page One" />
 
         <TextView
@@ -48,7 +50,8 @@
             android:alpha="0.7"
             android:gravity="center"
             android:text="Add a long description here about your app's important feature."
-            android:textColor="@android:color/white" />
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
