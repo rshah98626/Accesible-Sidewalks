@@ -92,10 +92,10 @@ public class OnboardingActivity extends AppCompatActivity {
         updateIndicators(page);
 
         final int color1 = ContextCompat.getColor(this, R.color.white_70);
-        final int color2 = ContextCompat.getColor(this, R.color.orange);
-        final int color3 = ContextCompat.getColor(this, R.color.green);
-        final int color4 = ContextCompat.getColor(this, R.color.red);
-        final int color5 = ContextCompat.getColor(this, R.color.amber);
+        final int color2 = ContextCompat.getColor(this, R.color.white_70);
+        final int color3 = ContextCompat.getColor(this, R.color.white_70);
+        final int color4 = ContextCompat.getColor(this, R.color.white_70);
+        final int color5 = ContextCompat.getColor(this, R.color.white_70);
 
         final int[] colorList = new int[]{color1, color2, color3, color4, color5};
         final ArgbEvaluator evaluator = new ArgbEvaluator();
