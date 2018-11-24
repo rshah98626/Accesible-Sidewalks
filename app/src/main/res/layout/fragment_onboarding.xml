@@ -17,6 +17,7 @@
             android:id="@+id/section_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="@dimen/onboardingPicturePadding"
             android:layout_gravity="top"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"/>
