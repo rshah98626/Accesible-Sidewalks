@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Looper;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -79,6 +83,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final String PREF_USER_FIRST_TIME = "user_first_time";
     boolean isUserFirstTime;
 
+    //For the shaking gesture
+    private ShakeGestureDetector shakeDetector;
+
+    //For the resize of the curbs
+    private ArrayList<Marker> curbs = new ArrayList<Marker>();
+    private ArrayList<LatLng> curb_pos = new ArrayList<LatLng>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +124,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Location management methods
         getLastLocation();
         startLocationUpdates();
-        
+
+
+        //shaking gesture
+        shakeDetector = new ShakeGestureDetector(this);
+
+
+        //Curbs creator
+        //top_right
+        curb_pos.add(new LatLng(40.116456, -88.235305));
+        curb_pos.add(new LatLng(40.116937, -88.232014));
+        //top_left
+        curb_pos.add(new LatLng(40.116523, -88.238883));
+        curb_pos.add(new LatLng(40.098386,-88.265381));
+        //bottom_right
+        curb_pos.add(new LatLng(40.114349, -88.230333));
+        curb_pos.add(new LatLng(40.108674, -88.211633));
+        //bottom_left
+        curb_pos.add(new LatLng(40.108965, -88.233684));
+        curb_pos.add(new LatLng(40.094309, -88.238839));
     }
 
 
@@ -157,6 +187,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //To change the position of the current location button
         if (mapView != null &&
                 mapView.findViewById(Integer.parseInt("1")) != null) {
+
+            //googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.day_mode));
+            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.night_mode));
+
+
             // Get the button view
             View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             // and next place it, on bottom right (as Google Maps app)
@@ -168,6 +203,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             layoutParams.setMargins(0, 170, 10, 0);
         }
 
+
+        //CURBS
+        int height = (int) (50);
+        int width = (int) (50);
+
+        // Read your drawable from somewhere
+        Drawable dr = ResourcesCompat.getDrawable(getResources(), R.drawable.curb_top_left, null);
+        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+        // Scale it
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+
+        // add curbs
+
+        for (int i = 0; i < 8; i++) {
+            curbs.add(mMap.addMarker(new MarkerOptions().position(curb_pos.get(i))
+                    .title("test").icon(BitmapDescriptorFactory.fromBitmap(scaledBitmap))));
+        }
+
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                float zoom = mMap.getCameraPosition().zoom;
+                if(!curbs.isEmpty()){
+                    if(zoom >15 && zoom <18.1){
+                        for (int i = 0; i < 8; i++) {
+                            curbs.get(i).setVisible(true);
+                        }
+                    }
+                    else{
+                        for (int i = 0; i < 8; i++) {
+                            curbs.get(i).setVisible(false);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     // Trigger new location updates at interval
@@ -250,7 +321,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             CameraPosition cameraPosition = new CameraPosition.Builder()
                                     .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                                    .zoom(150)                   // Sets the zoom
+                                    .zoom(16)                   // Sets the zoom
                                     .build();                   // Creates a CameraPosition from the builder
                             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                         }
@@ -405,5 +476,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    protected void onResume() {
+        super.onResume();
+            if (shakeDetector != null) {
+              shakeDetector.registerSensorListeners();
+            }
+    }
+
+    protected void onPause(){
+        super.onPause();
+        if (shakeDetector != null) {
+            shakeDetector.unRegisterSensorListeners();
+        }
+    }
+
 
 }
