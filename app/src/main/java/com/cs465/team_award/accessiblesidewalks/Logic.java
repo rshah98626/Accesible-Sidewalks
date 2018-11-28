@@ -31,6 +31,10 @@ public class Logic extends Thread{
     // Last locations: To temporary calculate the speed
 
 
+    //FOR THE Shake
+    private Synchronizer sync;
+
+
 
     private Logic(){
         myLoc = new Location(" ");
@@ -46,6 +50,7 @@ public class Logic extends Thread{
         obstacles.add(new Obstacle(new LatLng(40.116443, -88.226773),0, testDescription));
 
 
+        sync =  new Synchronizer();
     }
 
     public static Logic getInstance(){
@@ -84,5 +89,9 @@ public class Logic extends Thread{
 
     public Obstacle getCurrentObstacle() {
         return currentObstacle;
+    }
+
+    public Synchronizer getSync() {
+        return sync;
     }
 }

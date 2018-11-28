@@ -47,11 +47,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, Observer {
 
     private static final int REQUEST_FINE_LOCATION = 100;
     private GoogleMap mMap;
@@ -85,10 +87,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //For the shaking gesture
     private ShakeGestureDetector shakeDetector;
+    private boolean nightMode;
 
     //For the resize of the curbs
     private ArrayList<Marker> curbs = new ArrayList<Marker>();
     private ArrayList<LatLng> curb_pos = new ArrayList<LatLng>();
+
+
 
 
     @Override
@@ -110,6 +115,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Initialize the logic
         logic = Logic.getInstance();
         obstacles = logic.getObstacles();
+
+        logic.getSync().addObserver(this);
+
 
 
         //Prepaire Layout
@@ -189,7 +197,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mapView.findViewById(Integer.parseInt("1")) != null) {
 
             //googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.day_mode));
-            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.night_mode));
+            googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.day_mode));
 
 
             // Get the button view
@@ -441,6 +449,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    public void changeMode(){
+     if(nightMode){
+         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.night_mode));
+
+         //TODO: draw low visibility lines
+     }else{
+         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.day_mode));
+
+         //TODO: hide low visibility lines
+     }
+    }
+
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
 
@@ -492,4 +512,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public void update(Observable observable, Object o) {
+        nightMode = !nightMode;
+        changeMode();
+    }
 }
