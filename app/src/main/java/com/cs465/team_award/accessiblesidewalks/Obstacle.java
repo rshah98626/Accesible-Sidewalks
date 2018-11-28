@@ -41,7 +41,7 @@ public class Obstacle {
                 stringType = "Construction";
                 break;
             case 1:
-                stringType = "Pithole";
+                stringType = "Pothole";
                 break;
             case 2:
                 stringType = "Other";

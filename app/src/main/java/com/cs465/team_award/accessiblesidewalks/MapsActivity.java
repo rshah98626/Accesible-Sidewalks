@@ -89,8 +89,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent introIntent = new Intent(MapsActivity.this, OnboardingActivity.class);
         introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
 
-        //if (isUserFirstTime)
-        startActivity(introIntent);
+        if (isUserFirstTime)
+            startActivity(introIntent);
         // ************** END ONBOARDING CODE ***********
 
         setContentView(R.layout.activity_maps);
@@ -131,8 +131,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         for(Obstacle o: obstacles) {
+
+            CustomInfoWindow customInfoWindow = new CustomInfoWindow(this);
+            googleMap.setInfoWindowAdapter(customInfoWindow);
+
+
             googleMap.addMarker(new MarkerOptions().position(o.getLoc())
-                    .title(o.getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2));
+                    .title(o.getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2).snippet(o.getDescription()));
         }
 
         if (checkPermissions()) {
@@ -281,7 +286,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //TODO: link the onboarding
+                Intent introIntent = new Intent(MapsActivity.this, OnboardingActivity.class);
+                introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
+
+                startActivity(introIntent);
             }
         });
 
