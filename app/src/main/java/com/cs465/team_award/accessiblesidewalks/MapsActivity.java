@@ -99,10 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Location management methods
         getLastLocation();
         startLocationUpdates();
-
-
-
-
+        
     }
 
 
