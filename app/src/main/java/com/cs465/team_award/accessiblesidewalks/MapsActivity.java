@@ -56,7 +56,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import java.util.Arrays;
 
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
@@ -263,7 +262,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Polyline l = mMap.addPolyline(new PolylineOptions()
                     .add(LowVisStreets.pts.get(i*2), LowVisStreets.pts.get((i*2)+1))
                     .width(20)
-                    .color(R.color.deep_purple));
+                    .color(R.color.low_v));
             if(!nightMode){
                l.setVisible(false);
             }
@@ -473,20 +472,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void changeMode(){
-     if(nightMode){
-         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.night_mode));
+    public void changeMode() {
+        if (nightMode) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.night_mode));
 
-         for(Polyline l : lowVisLines){
-            l.setVisibility(true);
-         }
+            for (Polyline l : lowVisLines) {
+                l.setVisible(true);
+            }
 
-     }else{
-         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.day_mode));
+        } else {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.day_mode));
 
-         for(Polyline l : lowVisLines){
-            l.setVisibility(false);
-         }     }
+            for (Polyline l : lowVisLines) {
+                l.setVisible(false);
+            }
+        }
     }
 
     @Override

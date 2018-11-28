@@ -153,6 +153,7 @@ public class OnboardingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                Utils.saveSharedSetting(OnboardingActivity.this, MapsActivity.PREF_USER_FIRST_TIME, "false");
             }
         });
 
