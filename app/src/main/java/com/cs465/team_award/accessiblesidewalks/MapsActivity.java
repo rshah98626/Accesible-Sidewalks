@@ -1,10 +1,12 @@
 package com.cs465.team_award.accessiblesidewalks;
 
 import android.Manifest;
+import com.cs465.team_award.accessiblesidewalks.LowVisStreets;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Looper;
@@ -39,10 +41,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
@@ -73,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean add_ob_button_pressed;
     private LatLng camera_center_pos;
     private ArrayList<Marker> markers = new ArrayList<Marker>();
+    private ArrayList<Polyline> lowVisLines = new ArrayList<>();
 
     private static String TAG = "DEBUGGING";
 
@@ -112,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Location management methods
         getLastLocation();
         startLocationUpdates();
-        
+
     }
 
 
@@ -168,6 +174,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             layoutParams.setMargins(0, 170, 10, 0);
         }
 
+        //draw polylines
+        for(int i = 0; i < 5; i++){
+            Polyline l = mMap.addPolyline(new PolylineOptions()
+                    .add(LowVisStreets.pts.get(i*2), LowVisStreets.pts.get((i*2)+1))
+                    .width(20)
+                    .color(R.color.deep_purple));
+            //l.setVisible(false);
+            lowVisLines.add(l);
+        }
     }
 
     // Trigger new location updates at interval
