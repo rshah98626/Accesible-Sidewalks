@@ -12,22 +12,17 @@ public class Obstacle {
     private String description;
     //Relevance score
     private int relevance;
-    //Orientation: 0: the obstacle is under a street in the map, 1: the obstacle is over the street
-    private int orientation;
 
-    public Obstacle(LatLng loc, int type, String description, int orientation){
+    public Obstacle(LatLng loc, int type, String description){
         this.loc = loc;
         this.type = type;
         this.description = description;
-        this.orientation = orientation;
     }
 
-    public int getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(int orientation) {
-        this.orientation = orientation;
+    public Obstacle(){
+        this.loc = new LatLng(0,0);
+        this.type = -1;
+        this.description = "";
     }
 
     public LatLng getLoc() {

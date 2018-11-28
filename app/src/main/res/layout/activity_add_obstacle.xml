@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AddObstacleActivity"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/close_icon"
+            android:background="@color/transparent"
+            android:layout_alignParentRight="true"/>
+
+        <ImageView
+            android:id="@+id/header"
+            android:layout_below="@+id/close_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/add_header"/>
+
+        <TextView
+            android:id="@+id/add_obstacle_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:textAllCaps="true"
+            android:text="@string/title_add_obstacle"
+            android:textAlignment="center"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_obstacle_title"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="100dp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/obstacle_type_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey"
+                android:textSize="12dp"
+                android:textAllCaps="false"
+                android:layout_marginBottom="10dp"
+                android:text="@string/obstacle_type_instruction"/>
+
+            <ImageButton
+                android:id="@+id/pithole_opt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/opt_pithole"
+                android:background="@color/transparent"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/obstacle_type_instruction" />
+
+            <ImageButton
+                android:id="@+id/contr_opt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/opt_contruction"
+                android:background="@color/transparent"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/obstacle_type_instruction" />
+
+            <ImageButton
+                android:id="@+id/other_opt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/opt_other"
+                android:background="@color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/obstacle_type_instruction"/>
+
+            <TextView
+                android:id="@+id/description_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey"
+                android:textSize="12dp"
+                android:textAllCaps="false"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/obstacle_description_instruction"
+                android:layout_below="@+id/pithole_opt"/>
+
+            <EditText
+                android:id="@+id/description_field"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/description_instruction"
+                android:hint="@string/obstacle_description_hint"
+                android:textSize="12dp"
+                android:lineSpacingExtra="4dp"
+                android:padding="5dp"
+                android:background="@drawable/border_text_field"
+                android:gravity="top"/>
+
+            <Button
+                android:id="@+id/choose_location"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/round_blue_button"
+                android:layout_below="@+id/description_field"
+                android:layout_marginTop="20dp"
+                android:text="@string/choose_location"
+                android:textColor="@color/white"/>
+
+        </RelativeLayout>
+</RelativeLayout>

@@ -1,11 +1,12 @@
 package com.cs465.team_award.accessiblesidewalks;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,11 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,31 +54,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location myLocation;
     private ArrayList<Obstacle> obstacles;
 
+    //Normal UI
+    private ImageButton add_obstacle;
+    private ImageButton info;
+
+    //for the adding state UI
+    private Button choose_location;
+    private Button go_back;
+    private ImageView pin;
+
+    private View mapView;
+
+    //Reference to the logic that manage the the data
+    private Logic logic;
+
+
+    private boolean add_ob_button_pressed;
+    private LatLng camera_center_pos;
+    private ArrayList<Marker> markers = new ArrayList<Marker>();
+
+
+
     private static String TAG = "DEBUGGING";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //Initialize the logic
+        logic = Logic.getInstance();
+        obstacles = logic.getObstacles();
+
+
+        //Prepaire Layout
+        initializeUI();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        mapView = mapFragment.getView();
 
         // Location management methods
         getLastLocation();
         startLocationUpdates();
 
-        //Initialize the obstacle list
-        obstacles = new ArrayList<Obstacle>();
 
 
-        //Test obstacles
-        String testDescription = "Lorem ipsum dolor sit amet consectetur adipiscing elit per commodo ullamcorper, fringilla luctus gravida at viverra vivamus aenean nulla condimentum pellentesque vestibulum, ridiculus natoque netus aliquet ad praesent arcu bibendum faucibus. ";
-        obstacles.add(new Obstacle(new LatLng(40.110404, -88.231220),0, testDescription, 1));
-        obstacles.add(new Obstacle(new LatLng(40.112685, -88.222637),1, testDescription, 0));
-        obstacles.add(new Obstacle(new LatLng(40.116443, -88.226773),0, testDescription, 1));
 
     }
 
@@ -91,19 +121,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         for(Obstacle o: obstacles) {
-            //Chose the right drawable for the obstacle (if its straight or upside down)
-            int tempMarker = 0;
-            if (o.getOrientation() == 0){
-                tempMarker = R.drawable.obstacle_0;
-            }
-            else if(o.getOrientation() == 1){
-                tempMarker = R.drawable.obstacle_1;
-
-
-            }
-
             googleMap.addMarker(new MarkerOptions().position(o.getLoc())
-                    .title(o.getType()).icon(BitmapDescriptorFactory.fromResource(tempMarker)));
+                    .title(o.getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2));
         }
 
         if (checkPermissions()) {
@@ -119,6 +138,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             googleMap.setMyLocationEnabled(true);
         }
+
+        //To change the position of the current location button
+        if (mapView != null &&
+                mapView.findViewById(Integer.parseInt("1")) != null) {
+            // Get the button view
+            View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            // and next place it, on bottom right (as Google Maps app)
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
+                    locationButton.getLayoutParams();
+            // position on right bottom
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+            layoutParams.setMargins(0, 170, 10, 0);
+        }
+
     }
 
     // Trigger new location updates at interval
@@ -171,24 +205,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         myLocation = location;
         LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
 
     }
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
 
     public void getLastLocation() {
         // Get last known recent location using new Google Play Services SDK (v11+)
@@ -230,6 +250,123 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
     }
 
+    private boolean checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            requestPermissions();
+            return false;
+        }
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_FINE_LOCATION);
+    }
+
+
+    public void initButtonsNormalUI(){
+        this.info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             //TODO: link the onboarding
+            }
+        });
+
+        this.add_obstacle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, AddObstacleActivity.class));
+                logic.addNewObstacle();
+            }
+        });
+    }
+
+    public void initButtonsAddUI(){
+        this.choose_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TODO: TAKE THE LOCATION OF THE MIDDLE OF THE SCREEN
+
+                // get the current center position of the marker
+                camera_center_pos = mMap.getCameraPosition().target;
+                // add marker
+                logic.getCurrentObstacle().setLoc(camera_center_pos);
+
+                markers.add(mMap.addMarker(new MarkerOptions().position(logic.getCurrentObstacle().getLoc())
+                        .title(logic.getCurrentObstacle().getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2)));
+
+                logic.finishAdding();
+                initializeUI();
+            }
+
+        });
+
+        this.go_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, AddObstacleActivity.class));
+                logic.addNewObstacle();
+            }
+        });
+    }
+
+    public void initializeUI(){
+        this.info = findViewById(R.id.info);
+        this.add_obstacle = findViewById(R.id.add_obstacle);
+        this.choose_location = findViewById(R.id.choose_location);
+        this.go_back = findViewById(R.id.go_back);
+        this.pin = findViewById(R.id.pin);
+
+
+        if(logic.isAdding()){
+            //To show
+            this.pin.setVisibility(View.VISIBLE);
+            this.choose_location.setVisibility(View.VISIBLE);
+            this.go_back.setVisibility(View.VISIBLE);
+
+            //To hide
+            this.info.setVisibility(View.GONE);
+            this.add_obstacle.setVisibility(View.GONE);
+
+            //clickListeners
+            initButtonsAddUI();
+
+        }else{
+
+            //To show
+            this.info.setVisibility(View.VISIBLE);
+            this.add_obstacle.setVisibility(View.VISIBLE);
+
+            //To hide
+            this.pin.setVisibility(View.GONE);
+            this.choose_location.setVisibility(View.GONE);
+            this.go_back.setVisibility(View.GONE);
+
+
+            initButtonsNormalUI();
+
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -251,20 +388,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
-    private boolean checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            requestPermissions();
-            return false;
-        }
-    }
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_FINE_LOCATION);
-    }
 }

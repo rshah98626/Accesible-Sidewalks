@@ -2,4 +2,11 @@
     <string name="app_name">AccessibleSidewalks</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="title_add_obstacle"><b>Add new obstacle</b></string>
+    <string name="obstacle_type_instruction">Select the type of the obstacle</string>
+    <string name="obstacle_description_instruction">Description</string>
+    <string name="obstacle_description_hint">Please enter a description that includes the details of the obstacle, size and lenght</string>
+    <string name="choose_location">Choose location</string>
+    <string name="go_back">Go back</string>
+
 </resources>
