@@ -51,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int REQUEST_FINE_LOCATION = 100;
     private GoogleMap mMap;
+
     private Location myLocation;
     private ArrayList<Obstacle> obstacles;
 
@@ -73,13 +74,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng camera_center_pos;
     private ArrayList<Marker> markers = new ArrayList<Marker>();
 
-
-
     private static String TAG = "DEBUGGING";
+
+    public static final String PREF_USER_FIRST_TIME = "user_first_time";
+    boolean isUserFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ********* CODE TO SWITCH TO ONBOARDING *********
+        isUserFirstTime = Boolean.valueOf(Utils.readSharedSetting(MapsActivity.this, PREF_USER_FIRST_TIME, "true"));
+
+        Intent introIntent = new Intent(MapsActivity.this, OnboardingActivity.class);
+        introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
+
+        //if (isUserFirstTime)
+        startActivity(introIntent);
+        // ************** END ONBOARDING CODE ***********
+
         setContentView(R.layout.activity_maps);
 
         //Initialize the logic

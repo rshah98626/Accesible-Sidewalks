@@ -78,3 +78,6 @@
 
 </RelativeLayout>
 
+<!-- 
+    Used to be in relative layout, now in the fragment below tools:context=".MapsActivity" />
+-->

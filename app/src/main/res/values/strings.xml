@@ -2,11 +2,30 @@
     <string name="app_name">AccessibleSidewalks</string>
     <string name="title_activity_maps">Map</string>
 
+
     <string name="title_add_obstacle"><b>Add new obstacle</b></string>
     <string name="obstacle_type_instruction">Select the type of the obstacle</string>
     <string name="obstacle_description_instruction">Description</string>
     <string name="obstacle_description_hint">Please enter a description that includes the details of the obstacle, size and lenght</string>
     <string name="choose_location">Choose location</string>
     <string name="go_back">Go back</string>
+
+    <string name="title_activity_onboarding">OnboardingActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="intro_section_title">Welcome to Accessible Sidewalks!</string>
+    <string name="curb_section_title">Blocked Curbs</string>
+    <string name="point_section_title">Blocked Sidewalk</string>
+    <string name="lowlight_section_title">Low Visibility Streets</string>
+    <string name="createobstacle_section_title">Add New Obstacle</string>
+    <string name="canadd_section_title">What You Can Add</string>
+    <string name="intro_section_description">Before you start, we\'d like to give you a brief tutorial on the app. Just swipe right or tap the arrow to move to the next page.</string>
+    <string name="curb_section_description">The red color on the curbs means that there is no ramps or is not accessible.</string>
+    <string name="point_section_description">The circles represent temporary obstacles in the sidewalks that can make difficult transit on them.</string>
+    <string name="lowlight_section_description">Night mode shows violet streets where the lighting is poor or the visibility is low</string>
+    <string name="createobstacle_section_description">Click on the plus button to add a new obstacle and then locate the obstacle in the map.</string>
+    <string name="canadd_section_description">Help others adding temporary obstacles you encounter, the rest is up to us!</string>
+    <string name="skip">Skip</string>
+    <string name="finish">Finish</string>
 
 </resources>

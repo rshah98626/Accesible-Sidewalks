@@ -49,6 +49,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddObstacleActivity"></activity>
+        <activity
+            android:name=".OnboardingActivity"
+            android:label="@string/title_activity_onboarding"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

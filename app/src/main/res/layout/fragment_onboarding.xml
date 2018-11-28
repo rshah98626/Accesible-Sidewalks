@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".OnboardingActivity$PlaceholderFragment">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top">
+
+        <ImageView
+            android:id="@+id/section_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/onboardingPicturePadding"
+            android:layout_gravity="top"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/section_label"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            tools:text="Page One" />
+
+        <TextView
+            android:id="@+id/section_description"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:alpha="0.7"
+            android:gravity="center"
+            android:text="Add a long description here about your app's important feature."
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+</FrameLayout>
