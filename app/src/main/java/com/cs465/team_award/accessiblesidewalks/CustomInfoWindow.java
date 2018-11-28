@@ -37,8 +37,6 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("DEBUGGING", "ASDFGHJK");
-
             }
         });
 
