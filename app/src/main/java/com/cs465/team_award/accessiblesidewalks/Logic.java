@@ -15,7 +15,7 @@ public class Logic extends Thread{
 
 
 
-    // --- Session management variables --- //
+    // --- Obstacles management variables --- //
 
     //Obstacles arraylist
     private ArrayList<Obstacle> obstacles;
@@ -23,6 +23,9 @@ public class Logic extends Thread{
     private Obstacle currentObstacle;
     //Boolean to know if is currently creating a new obstacle
     private boolean adding;
+
+    // --- Curbs management variables --- //
+    private ArrayList<Curb> curbs;
 
 
     // --- Location management variables --- //
@@ -39,8 +42,9 @@ public class Logic extends Thread{
     private Logic(){
         myLoc = new Location(" ");
 
-        //Initialize the obstacle list
+        //Initialize the list
         obstacles = new ArrayList<Obstacle>();
+        curbs = new ArrayList<Curb>();
 
 
         //Test obstacles
@@ -49,6 +53,19 @@ public class Logic extends Thread{
         obstacles.add(new Obstacle(new LatLng(40.112685, -88.222637),1, testDescription));
         obstacles.add(new Obstacle(new LatLng(40.116443, -88.226773),0, testDescription));
 
+        //Test curbs
+        //top_right
+        curbs.add(new Curb(new LatLng(40.117859, -88.233776),0));
+        curbs.add(new Curb(new LatLng(40.114506, -88.222369),0));
+        //top_left
+        curbs.add(new Curb(new LatLng(40.117857, -88.233752),1));
+        curbs.add(new Curb(new LatLng(40.113585, -88.220626),1));
+        //bottom_right
+        curbs.add(new Curb(new LatLng(40.113539, -88.220624),2));
+        curbs.add(new Curb(new LatLng(40.105922, -88.223810),2));
+        //bottom_left
+        curbs.add(new Curb(new LatLng(40.101450, -88.233404),3));
+        curbs.add(new Curb(new LatLng(40.105928, -88.223872),3));
 
         sync =  new Synchronizer();
     }
@@ -93,5 +110,9 @@ public class Logic extends Thread{
 
     public Synchronizer getSync() {
         return sync;
+    }
+
+    public ArrayList<Curb> getCurbs() {
+        return curbs;
     }
 }

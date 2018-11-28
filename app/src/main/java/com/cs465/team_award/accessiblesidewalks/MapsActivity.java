@@ -1,15 +1,11 @@
 package com.cs465.team_award.accessiblesidewalks;
 
 import android.Manifest;
-import com.cs465.team_award.accessiblesidewalks.LowVisStreets;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Looper;
@@ -68,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Location myLocation;
     private ArrayList<Obstacle> obstacles;
+    private ArrayList<Curb> curbs;
 
     //Normal UI
     private ImageButton add_obstacle;
@@ -99,8 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean nightMode;
 
     //For the resize of the curbs
-    private ArrayList<Marker> curbs = new ArrayList<Marker>();
-    private ArrayList<LatLng> curb_pos = new ArrayList<LatLng>();
+    private ArrayList<Marker> curbsMarkers = new ArrayList<Marker>();
 
 
 
@@ -109,7 +105,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ********* CODE TO SWITCH TO ONBOARDING *********
+        // ---- CODE TO SWITCH TO ONBOARDING ----//
         isUserFirstTime = Boolean.valueOf(Utils.readSharedSetting(MapsActivity.this, PREF_USER_FIRST_TIME, "true"));
 
         Intent introIntent = new Intent(MapsActivity.this, OnboardingActivity.class);
@@ -117,19 +113,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (isUserFirstTime)
             startActivity(introIntent);
-        // ************** END ONBOARDING CODE ***********
+        // ---- END ONBOARDING CODE ---- //
 
         setContentView(R.layout.activity_maps);
 
         //Initialize the logic
         logic = Logic.getInstance();
         obstacles = logic.getObstacles();
+        curbs = logic.getCurbs();
 
+
+        //shaking gesture
+        shakeDetector = new ShakeGestureDetector(this);
         logic.getSync().addObserver(this);
 
 
-
-        //Prepaire Layout
+        //Prepare Layout
         initializeUI();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -142,24 +141,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLastLocation();
         startLocationUpdates();
 
-
-        //shaking gesture
-        shakeDetector = new ShakeGestureDetector(this);
-
-
-        //Curbs creator
-        //top_right
-        curb_pos.add(new LatLng(40.116456, -88.235305));
-        curb_pos.add(new LatLng(40.116937, -88.232014));
-        //top_left
-        curb_pos.add(new LatLng(40.116523, -88.238883));
-        curb_pos.add(new LatLng(40.098386,-88.265381));
-        //bottom_right
-        curb_pos.add(new LatLng(40.114349, -88.230333));
-        curb_pos.add(new LatLng(40.108674, -88.211633));
-        //bottom_left
-        curb_pos.add(new LatLng(40.108965, -88.233684));
-        curb_pos.add(new LatLng(40.094309, -88.238839));
     }
 
 
@@ -175,6 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMaxZoomPreference(16.0f);
 
 
         for(Obstacle o: obstacles) {
@@ -226,16 +208,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int width = (int) (50);
 
         // Read your drawable from somewhere
-        Drawable dr = ResourcesCompat.getDrawable(getResources(), R.drawable.curb_top_left, null);
-        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-        // Scale it
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        Drawable curbsRes[] = new Drawable[4];
+        curbsRes[0] = ResourcesCompat.getDrawable(getResources(), R.drawable.curb_top_left, null);
+        curbsRes[1] = ResourcesCompat.getDrawable(getResources(), R.drawable.curb_top_rigt, null);
+        curbsRes[2] = ResourcesCompat.getDrawable(getResources(), R.drawable.curb_bottom_left, null);
+        curbsRes[3] = ResourcesCompat.getDrawable(getResources(), R.drawable.curb_bottom_right, null);
+
+        Bitmap curbsImages[] = new Bitmap[4];
+        for (int i=0; i<curbsImages.length; i++){
+            curbsImages[i]= Bitmap.createScaledBitmap(((BitmapDrawable)curbsRes[i]).getBitmap(), width, height, true);
+        }
 
         // add curbs
-
-        for (int i = 0; i < 8; i++) {
-            curbs.add(mMap.addMarker(new MarkerOptions().position(curb_pos.get(i))
-                    .title("test").icon(BitmapDescriptorFactory.fromBitmap(scaledBitmap))));
+        for (int i = 0; i < curbs.size(); i++) {
+            switch (curbs.get(i).getOrientation()){
+                case 0:
+                    curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(1f,1f)
+                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                    break;
+                case 1:
+                    curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(0f,1f)
+                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                    break;
+                case 2:
+                    curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(1f,0f)
+                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                    break;
+                case 3:
+                    curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(0f,0f)
+                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                    break;
+            }
         }
 
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
@@ -245,12 +248,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(!curbs.isEmpty()){
                     if(zoom >15 && zoom <18.1){
                         for (int i = 0; i < 8; i++) {
-                            curbs.get(i).setVisible(true);
+                            curbsMarkers.get(i).setVisible(true);
                         }
                     }
                     else{
                         for (int i = 0; i < 8; i++) {
-                            curbs.get(i).setVisible(false);
+                            curbsMarkers.get(i).setVisible(false);
                         }
                     }
                 }
