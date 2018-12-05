@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
+
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddObstacleActivity"
+    android:background="@color/white">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".AddObstacleActivity"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/close_icon"
-            android:background="@color/transparent"
-            android:layout_alignParentRight="true"/>
+            <ImageButton
+                android:id="@+id/close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/close_icon"
+                android:background="@color/transparent"
+                android:layout_alignParentRight="true"/>
 
-        <ImageView
-            android:id="@+id/header"
-            android:layout_below="@+id/close_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/add_header"/>
+            <ImageView
+                android:id="@+id/header"
+                android:layout_below="@+id/close_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/add_header"/>
 
-        <TextView
-            android:id="@+id/add_obstacle_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/header"
-            android:textColor="@color/black"
-            android:layout_marginTop="15dp"
-            android:textSize="18sp"
-            android:textAllCaps="true"
-            android:text="@string/title_add_obstacle"
-            android:textAlignment="center"
-            />
+            <TextView
+                android:id="@+id/add_obstacle_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header"
+                android:textColor="@color/black"
+                android:layout_marginTop="15dp"
+                android:textSize="18sp"
+                android:textAllCaps="true"
+                android:text="@string/title_add_obstacle"
+                android:textAlignment="center" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/add_obstacle_title"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="100dp"
-            android:layout_centerHorizontal="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_obstacle_title"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="100dp"
+                android:layout_centerHorizontal="true">
 
             <TextView
                 android:id="@+id/obstacle_type_instruction"
@@ -111,9 +118,10 @@
                 android:layout_height="50dp"
                 android:background="@drawable/round_blue_button"
                 android:layout_below="@+id/description_field"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/choose_location"
                 android:textColor="@color/white"/>
-
         </RelativeLayout>
+
 </RelativeLayout>
+</ScrollView>

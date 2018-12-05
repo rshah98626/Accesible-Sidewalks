@@ -25,7 +25,7 @@ public class Obstacle {
     public Obstacle(){
         this.loc = new LatLng(0,0);
         this.type = -1;
-        this.description = "";
+        this.description = "There is no description provided";
     }
 
     public LatLng getLoc() {

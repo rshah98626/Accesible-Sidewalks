@@ -112,7 +112,7 @@
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#38414e"
+        "color": "#4B5766"
       }
     ]
   },
@@ -121,7 +121,7 @@
     "elementType": "geometry.stroke",
     "stylers": [
       {
-        "color": "#212a37"
+        "color": "#1F2835"
       }
     ]
   },

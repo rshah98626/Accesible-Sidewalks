@@ -31,19 +31,15 @@ public class AddObstacleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_obstacle);
 
         logic = Logic.getInstance();
-        type = -1;
 
         initViews();
+        type = 2;
+        toggleType();
+
     }
 
     public void initViews(){
         this.description = findViewById(R.id.description_field);
-        this.description.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: change listener
-            }
-        });
 
         this.chooseLocation = findViewById(R.id.choose_location);
         this.chooseLocation.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +49,9 @@ public class AddObstacleActivity extends AppCompatActivity {
 
 
                 //Add the information to the temporal obstacle in the logic
-                logic.getCurrentObstacle().setDescription(getDescription());
+                if(!getDescription().isEmpty()) {
+                    logic.getCurrentObstacle().setDescription(getDescription());
+                }
                 logic.getCurrentObstacle().setType(type);
             }
         });
