@@ -11,10 +11,10 @@ import java.util.Calendar;
 
 public class ShakeGestureDetector implements SensorEventListener {
     // This is the min force to consider as a shake
-    private static double SHAKE_MIN_THRESHOLD = 12.0;
+    private static double SHAKE_MIN_THRESHOLD = 20.0;
 
     // Number of total "shakes" that must be detected for the gesture
-    private static int SHAKE_NUMBER_OF_STATES = 8;
+    private static int SHAKE_NUMBER_OF_STATES = 14;
 
     // The time window in milliseconds in which the "shakes" must occur
     private static int SHAKE_MIN_TIME = 1000;
@@ -73,22 +73,24 @@ public void onSensorChanged(SensorEvent event) {
         startTime = Calendar.getInstance().getTimeInMillis();
         } else {
         state = 0;
+        startTime = 0;
         }
 
         // there was sufficient force to detect a shake gesture
         } else if (state >= SHAKE_NUMBER_OF_STATES) {
-        onShakeDetected();
         state = 0;
+        startTime = 0;
+        onShakeDetected();
 
         // continue to track length of motion
         } else if (state > 0) {
         if ((Calendar.getInstance().getTimeInMillis() - startTime) > SHAKE_MIN_TIME) {
         // it has taken too long, reset
         state = 0;
+        startTime = 0;
         } else if (length > SHAKE_MIN_THRESHOLD) {
         // otherwise, check if sufficient force is present to advance
         ++state;
-        //TODO: check the number of required shakes
         }
         }
         }

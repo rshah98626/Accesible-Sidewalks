@@ -2,6 +2,7 @@ package com.cs465.team_award.accessiblesidewalks;
 
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 public class Obstacle {
     //Geolocation of the obstacle
@@ -12,6 +13,8 @@ public class Obstacle {
     private String description;
     //Relevance score
     private int relevance;
+    //Reference of the google maps Marker
+    private Marker referenceMarker;
 
     public Obstacle(LatLng loc, int type, String description){
         this.loc = loc;
@@ -49,6 +52,14 @@ public class Obstacle {
         }
 
         return stringType;
+    }
+
+    public Marker getReferenceMarker() {
+        return referenceMarker;
+    }
+
+    public void setReferenceMarker(Marker referenceMarker) {
+        this.referenceMarker = referenceMarker;
     }
 
     public void setType(int type) {

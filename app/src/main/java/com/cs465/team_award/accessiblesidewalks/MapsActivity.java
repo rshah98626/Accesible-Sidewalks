@@ -49,6 +49,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -97,9 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //For the resize of the curbs
     private ArrayList<Marker> curbsMarkers = new ArrayList<Marker>();
-
-
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLastLocation();
         startLocationUpdates();
 
+
     }
 
 
@@ -164,9 +164,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             CustomInfoWindow customInfoWindow = new CustomInfoWindow(this);
             googleMap.setInfoWindowAdapter(customInfoWindow);
 
-
-            googleMap.addMarker(new MarkerOptions().position(o.getLoc())
+            Marker tempMarker = googleMap.addMarker(new MarkerOptions().position(o.getLoc())
                     .title(o.getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2).snippet(o.getDescription()));
+
+            o.setReferenceMarker(tempMarker);
         }
 
         if (checkPermissions()) {
@@ -224,19 +225,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             switch (curbs.get(i).getOrientation()){
                 case 0:
                     curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(1f,1f)
-                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                            .flat(true).title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
                     break;
                 case 1:
                     curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(0f,1f)
-                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                            .flat(true).title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
                     break;
                 case 2:
                     curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(1f,0f)
-                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                            .flat(true).title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
                     break;
                 case 3:
                     curbsMarkers.add(mMap.addMarker(new MarkerOptions().position(curbs.get(i).getPosition()).anchor(0f,0f)
-                            .title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
+                            .flat(true).title("Non accessible curb").icon(BitmapDescriptorFactory.fromBitmap(curbsImages[curbs.get(i).getOrientation()]))));
                     break;
             }
         }
@@ -260,12 +261,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Log.d(TAG, "Hola mundo");
+                for (Obstacle o:obstacles){
+                    if(o.getReferenceMarker().equals(marker)){
+                        Log.d(TAG, "Type: "+o.getType()+" / Description: "+o.getDescription());
+                    }
+                }
+                return false;
+            }
+        });
+
         //draw polylines
         for(int i = 0; i < 5; i++){
             Polyline l = mMap.addPolyline(new PolylineOptions()
-                    .add(LowVisStreets.pts.get(i*2), LowVisStreets.pts.get((i*2)+1))
-                    .width(20)
-                    .color(R.color.low_v));
+                    .add(LowVisStreets.pts.get(i*2), LowVisStreets.pts.get((i*2)+1)).color( ContextCompat.getColor(this, R.color.low_v)));
+            //.color(R.color.low_v))
             if(!nightMode){
                l.setVisible(false);
             }
@@ -412,15 +425,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
-                //TODO: TAKE THE LOCATION OF THE MIDDLE OF THE SCREEN
 
                 // get the current center position of the marker
                 camera_center_pos = mMap.getCameraPosition().target;
                 // add marker
                 logic.getCurrentObstacle().setLoc(camera_center_pos);
 
-                markers.add(mMap.addMarker(new MarkerOptions().position(logic.getCurrentObstacle().getLoc())
-                        .title(logic.getCurrentObstacle().getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2)));
+
+                Marker tempMark = mMap.addMarker(new MarkerOptions().position(logic.getCurrentObstacle().getLoc())
+                        .title(logic.getCurrentObstacle().getType()).icon(BitmapDescriptorFactory.fromResource(R.drawable.obstacle)).anchor(1/2,1/2));
+                logic.getCurrentObstacle().setReferenceMarker(tempMark);
+
 
                 logic.finishAdding();
                 initializeUI();

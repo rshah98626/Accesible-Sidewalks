@@ -82,18 +82,17 @@ public class Logic extends Thread{
     }
 
     //Close the current session
-    public void finishAdding(){
-        Log.d(TAG, "A NEW OBSTACLE WAS CREATED: Type = "+currentObstacle.getType()+" Description"+ currentObstacle.getDescription());
-        if(currentObstacle.getLoc().latitude != 0 && currentObstacle.getLoc().longitude !=0){
-            // TODO: feedback If the obstacle is added correctl
-
-            obstacles.add(currentObstacle);
+    public int finishAdding(){
+        int state = 0;
+        if(currentObstacle.getLoc().latitude == 0 && currentObstacle.getLoc().longitude == 0){
+            adding = false;
+            state = -1;
         }else{
-            // TODO: feedback If the obstacle is not added
+            obstacles.add(currentObstacle);
+            adding = false;
+            state = 1;
         }
-
-        adding = false;
-
+        return state;
     }
 
     public ArrayList<Obstacle> getObstacles() {
