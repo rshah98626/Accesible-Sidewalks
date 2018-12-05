@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AccessibleSidewalks</string>
     <string name="title_activity_maps">Map</string>
+    <string name="start_now">Start now</string>
 
 
     <string name="title_add_obstacle"><b>Add new obstacle</b></string>

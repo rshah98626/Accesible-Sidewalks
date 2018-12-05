@@ -98,7 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //For the resize of the curbs
     private ArrayList<Marker> curbsMarkers = new ArrayList<Marker>();
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
