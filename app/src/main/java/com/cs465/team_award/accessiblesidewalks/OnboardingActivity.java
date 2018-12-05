@@ -1,6 +1,7 @@
 package com.cs465.team_award.accessiblesidewalks;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
@@ -154,6 +155,8 @@ public class OnboardingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
                 Utils.saveSharedSetting(OnboardingActivity.this, MapsActivity.PREF_USER_FIRST_TIME, "false");
+                Intent introIntent = new Intent(OnboardingActivity.this, MapsActivity.class);
+                startActivity(introIntent);
             }
         });
 
@@ -163,7 +166,8 @@ public class OnboardingActivity extends AppCompatActivity {
                 finish();
                 //  update 1st time pref
                 Utils.saveSharedSetting(OnboardingActivity.this, MapsActivity.PREF_USER_FIRST_TIME, "false");
-
+                Intent introIntent = new Intent(OnboardingActivity.this, MapsActivity.class);
+                startActivity(introIntent);
             }
         });
     }

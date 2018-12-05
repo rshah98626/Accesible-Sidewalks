@@ -107,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // ---- CODE TO SWITCH TO ONBOARDING ----//
         isUserFirstTime = Boolean.valueOf(Utils.readSharedSetting(MapsActivity.this, PREF_USER_FIRST_TIME, "true"));
 
-        Intent introIntent = new Intent(MapsActivity.this, OnboardingActivity.class);
+        Intent introIntent = new Intent(MapsActivity.this, WelcomeActivity.class);
         introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
 
         if (isUserFirstTime)
