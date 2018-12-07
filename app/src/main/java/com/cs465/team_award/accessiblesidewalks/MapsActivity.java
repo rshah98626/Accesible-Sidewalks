@@ -277,7 +277,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         //draw polylines
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < LowVisStreets.pts.size()/2; i++){
             Polyline l = mMap.addPolyline(new PolylineOptions()
                     .add(LowVisStreets.pts.get(i*2), LowVisStreets.pts.get((i*2)+1)).color( ContextCompat.getColor(this, R.color.low_v)));
             //.color(R.color.low_v))
