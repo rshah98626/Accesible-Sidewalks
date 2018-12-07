@@ -47,26 +47,44 @@ public class Logic extends Thread{
         obstacles = new ArrayList<Obstacle>();
         curbs = new ArrayList<Curb>();
 
+        //Add some obstacles
+        // Sixth and Green
+        obstacles.add(new Obstacle(new LatLng(40.110242,-88.230030),0, "Minimal issue, ramp provided to the street to bypass construction"));
+        // Outside Cravings
+        obstacles.add(new Obstacle(new LatLng(40.111803,-88.229126),0, "Rough asphalt ramp leading to the street to bypass construction"));
+        // John St
+        obstacles.add(new Obstacle(new LatLng(40.109223,-88.234347),0, "Sidewalk is blocked for half the block, use south sidewalk instead"));
+        // Near FLB
+        obstacles.add(new Obstacle(new LatLng(40.106102,-88.225156),0, "Sidewalk closed, use south sidewalk instead"));
+        // Lincoln and Oregon
+        obstacles.add(new Obstacle(new LatLng(40.107075,-88.219435),1, "Street in bad condition, lots of potholes when crossing Oregon at the corner"));
+        // Main and Harvey
+        obstacles.add(new Obstacle(new LatLng(40.114183, -88.222558),1,"Entire sidewalk segment missing"));
+        // Clark and Gregory
+        obstacles.add(new Obstacle(new LatLng(40.115602, -88.220443),1,"Cobblestone sidewalk, very uneven"));
+        // Gregory, between Springfield and Western
+        obstacles.add(new Obstacle(new LatLng(40.112654, -88.220864),1,"Cobblestone sidewalk, very uneven"));
+        // Sixth and Peabody
+        obstacles.add(new Obstacle(new LatLng(40.101251, -88.233687),0,"Sidewalk blocked, use east side of Sixth Street"));
 
-        //Test obstacles
-        String testDescription = "Lorem ipsum dolor sit amet consectetur adipiscing elit per commodo ullamcorper, fringilla luctus gravida at viverra vivamus aenean nulla condimentum pellentesque vestibulum, ridiculus natoque netus aliquet ad praesent arcu bibendum faucibus. ";
-        obstacles.add(new Obstacle(new LatLng(40.110404, -88.231220),0, testDescription));
-        obstacles.add(new Obstacle(new LatLng(40.112685, -88.222637),1, testDescription));
-        obstacles.add(new Obstacle(new LatLng(40.116443, -88.226773),0, testDescription));
-
-        //Test curbs
-        //top_right
-        curbs.add(new Curb(new LatLng(40.117859, -88.233776),0));
-        curbs.add(new Curb(new LatLng(40.114506, -88.222369),0));
-        //top_left
-        curbs.add(new Curb(new LatLng(40.117857, -88.233752),1));
-        curbs.add(new Curb(new LatLng(40.113585, -88.220626),1));
-        //bottom_right
-        curbs.add(new Curb(new LatLng(40.113539, -88.220624),2));
-        curbs.add(new Curb(new LatLng(40.105922, -88.223810),2));
-        //bottom_left
-        curbs.add(new Curb(new LatLng(40.101450, -88.233404),3));
-        curbs.add(new Curb(new LatLng(40.105928, -88.223872),3));
+        //Add some missing curbs
+        // Lincoln and Stoughton
+        curbs.add(new Curb(new LatLng(40.113600, -88.219307),1));
+        // Lincoln and Main
+        curbs.add(new Curb(new LatLng(40.114525, -88.219302),1));
+        curbs.add(new Curb(new LatLng(40.114525, -88.219302),3));
+        // Lincoln and Clark
+        curbs.add(new Curb(new LatLng(40.115463, -88.219300),1));
+        curbs.add(new Curb(new LatLng(40.115463, -88.219300),3));
+        // Clark and Harvey
+        curbs.add(new Curb(new LatLng(40.115404, -88.222305),3));
+        // Gregory and Main
+        curbs.add(new Curb(new LatLng(40.114473, -88.220687),2));
+        curbs.add(new Curb(new LatLng(40.114473, -88.220687),3));
+        // Gregory and Western
+        curbs.add(new Curb(new LatLng(40.112261, -88.220691),0));
+        // First and Peabody
+        curbs.add(new Curb(new LatLng(40.101410, -88.238547),3));
 
         sync =  new Synchronizer();
     }
