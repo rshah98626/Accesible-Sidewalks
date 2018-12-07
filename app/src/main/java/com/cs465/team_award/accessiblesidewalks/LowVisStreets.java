@@ -21,7 +21,22 @@ public class LowVisStreets {
     // Oak John to Armory
     static LatLng i = new LatLng(40.109017, -88.241617);
     static LatLng j = new LatLng(40.105390, -88.241553);
+    // Healey 3rd to 4th
+    static LatLng k = new LatLng(40.111457, -88.235392);
+    static LatLng l = new LatLng(40.111466, -88.233566);
+    // Sidewalk behind Busey/Evans
+    static LatLng m = new LatLng(40.105362, -88.223784);
+    static LatLng n = new LatLng(40.105363, -88.221447);
+    // Sidewalk to LAR
+    static LatLng o = new LatLng(40.104932, -88.220822);
+    // Sidewalk in Illini Grove
+    static LatLng p = new LatLng(40.102309, -88.221005);
+    static LatLng q = new LatLng(40.100732, -88.220982);
+    // Busey Pennsylvania to Springfield
+    static LatLng r = new LatLng(40.100720, -88.217580);
+    static LatLng s = new LatLng(40.112751, -88.217757);
+
     static ArrayList<LatLng> pts = new ArrayList<>(
-            Arrays.asList(a,b,c,d,e,f,g,h,i,j)
+            Arrays.asList(a,b,c,d,e,f,g,h,i,j,k,l,m,n,n,o,p,q,r,s)
     );
 }
