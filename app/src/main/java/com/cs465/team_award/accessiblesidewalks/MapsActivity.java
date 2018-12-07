@@ -99,20 +99,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //For the resize of the curbs
     private ArrayList<Marker> curbsMarkers = new ArrayList<Marker>();
 
+    private boolean isFirstOpened;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("Oncreate called", "Oncreate called");
         super.onCreate(savedInstanceState);
-
-        // ---- CODE TO SWITCH TO ONBOARDING ----//
-        isUserFirstTime = Boolean.valueOf(Utils.readSharedSetting(MapsActivity.this, PREF_USER_FIRST_TIME, "true"));
-
-        Intent introIntent = new Intent(MapsActivity.this, WelcomeActivity.class);
-        introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
-
-        if (isUserFirstTime)
-            startActivity(introIntent);
-        // ---- END ONBOARDING CODE ---- //
 
         setContentView(R.layout.activity_maps);
 
@@ -140,7 +132,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLastLocation();
         startLocationUpdates();
 
+        // ---- CODE TO SWITCH TO ONBOARDING ----//
+        isUserFirstTime = Boolean.valueOf(Utils.readSharedSetting(MapsActivity.this, PREF_USER_FIRST_TIME, "true"));
 
+        Intent introIntent = new Intent(MapsActivity.this, WelcomeActivity.class);
+        introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
+
+        if (logic.getOpenFirst())
+            startActivity(introIntent);
+        // ---- END ONBOARDING CODE ---- //
+
+        isFirstOpened = logic.setOpenFirst(false);
     }
 
 

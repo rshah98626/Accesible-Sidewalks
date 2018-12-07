@@ -37,9 +37,10 @@ public class Logic extends Thread{
     //FOR THE Shake
     private Synchronizer sync;
 
-
+    private boolean openedFirst;
 
     private Logic(){
+        openedFirst = true;
         myLoc = new Location(" ");
 
         //Initialize the list
@@ -113,5 +114,14 @@ public class Logic extends Thread{
 
     public ArrayList<Curb> getCurbs() {
         return curbs;
+    }
+
+    public boolean getOpenFirst(){
+        return openedFirst;
+    }
+
+    public boolean setOpenFirst(boolean b){
+        openedFirst = b;
+        return openedFirst;
     }
 }
