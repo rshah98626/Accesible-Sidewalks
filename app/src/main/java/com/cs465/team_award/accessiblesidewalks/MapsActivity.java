@@ -249,13 +249,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onCameraMove() {
                 float zoom = mMap.getCameraPosition().zoom;
                 if(!curbs.isEmpty()){
-                    if(zoom >15 && zoom <18.1){
-                        for (int i = 0; i < 8; i++) {
+                    if(zoom >14 && zoom <18.1){
+                        for (int i = 0; i < curbs.size(); i++) {
                             curbsMarkers.get(i).setVisible(true);
                         }
                     }
                     else{
-                        for (int i = 0; i < 8; i++) {
+                        for (int i = 0; i < curbs.size(); i++) {
                             curbsMarkers.get(i).setVisible(false);
                         }
                     }
